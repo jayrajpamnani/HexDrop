@@ -1,4 +1,5 @@
 Note: This Project was initially named PeerPC, so you may find that name in some of the places, which you can ignore.
+
 **HexDrop project structure and logic:**
 
 1. **Project Overview**:
