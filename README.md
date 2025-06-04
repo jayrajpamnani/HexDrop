@@ -52,13 +52,13 @@ Note: This Project was initially named PeerPC, so you may find that name in some
 ## Screenshots
 
 ### 1. Upload a file
-![Upload](./public/screenshots/1-upload.png)
+./public/screenshots/1-upload.png
 
 ### 2. Share the key
-![Key](./public/screenshots/2-key.png)
+./public/screenshots/2-key.png
 
 ### 3. Download the file
-![Download](./public/screenshots/3-download.png)
+./public/screenshots/3-download.png
 
 6. **Security Features**:
    - File encryption using IV and auth tags
