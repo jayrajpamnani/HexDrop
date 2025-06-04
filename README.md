@@ -1,4 +1,6 @@
-**PeerPC project structure and logic:**
+Note: This Project was initially named PeerPC, so you may find that name in some of the places, which you can ignore.
+
+**HexDrop project structure and logic:**
 
 1. **Project Overview**:
    - This is a Next.js application built with TypeScript for peer-to-peer file sharing
@@ -63,6 +65,7 @@ Let me check the main page component to understand the user interface better.
 
 
 Read file: src/app/page.tsx
+
 8. **User Interface**:
    The main page (`page.tsx`) implements a clean, modern interface with two main sections:
 
