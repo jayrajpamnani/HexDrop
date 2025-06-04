@@ -3,6 +3,16 @@ import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ProgressTracker } from "@/components/ProgressTracker";
+import { toast } from "sonner";
+
+interface UploadResponse {
+  key: number;
+  error?: string;
+}
+
+interface DownloadResponse {
+  error?: string;
+}
 
 export default function HomePage() {
   // Send state
@@ -31,20 +41,23 @@ export default function HomePage() {
     setGeneratedKey(null);
     const formData = new FormData();
     formData.append("file", file);
+
     try {
       const response = await fetch("/api/upload", {
         method: "POST",
         body: formData,
       });
-      const data = await response.json();
+      const data = (await response.json()) as UploadResponse;
+
       if (response.ok && data.key) {
         setGeneratedKey(data.key);
+        toast.success("File uploaded successfully!");
       } else {
-        alert(data.error || "Upload failed");
+        toast.error(data.error || "Upload failed");
       }
     } catch (error) {
       console.error("Upload error:", error);
-      alert("An error occurred during upload.");
+      toast.error("An error occurred during upload.");
     } finally {
       setUploading(false);
       setUploadProgress(0);
@@ -54,26 +67,28 @@ export default function HomePage() {
   // Handle file download
   const handleDownload = async () => {
     if (!receiveKey.match(/^\d{6}$/)) {
-      alert("Please enter a valid 6-digit key.");
+      toast.error("Please enter a valid 6-digit key.");
       return;
     }
     setDownloading(true);
     setDownloadProgress(0);
+
     try {
       const response = await fetch(`/api/download/${receiveKey}`);
       if (!response.ok) {
-        const data = await response.json();
-        alert(data.error || "Download failed");
+        const data = (await response.json()) as DownloadResponse;
+        toast.error(data.error || "Download failed");
         return;
       }
+
       const blob = await response.blob();
-      // Try to get filename from Content-Disposition
       const disposition = response.headers.get("Content-Disposition");
       let filename = "downloaded-file";
       if (disposition) {
         const match = disposition.match(/filename="(.+)"/);
         if (match) filename = match[1];
       }
+
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -82,9 +97,10 @@ export default function HomePage() {
       a.click();
       a.remove();
       window.URL.revokeObjectURL(url);
+      toast.success("File downloaded successfully!");
     } catch (error) {
       console.error("Download error:", error);
-      alert("An error occurred during download.");
+      toast.error("An error occurred during download.");
     } finally {
       setDownloading(false);
       setDownloadProgress(0);
@@ -92,7 +108,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+    <main className="min-h-screen flex flex-col items-center justify-center bg-white p-4">
       <h1 className="text-4xl font-bold mb-8 text-red-600 text-center drop-shadow">
         HexDrop: Private, encrypted file delivery
       </h1>
@@ -106,27 +122,46 @@ export default function HomePage() {
             className="hidden"
             onChange={handleFileChange}
             disabled={uploading}
+            aria-label="Select file to upload"
           />
           <Button
             className="bg-red-600 hover:bg-red-700 text-white w-16 h-16 rounded-full text-4xl flex items-center justify-center mb-4"
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
+            aria-label="Open file selector"
           >
             +
           </Button>
-          {file && <div className="mb-2 text-sm text-gray-700">{file.name}</div>}
+          {file && (
+            <div className="mb-2 text-sm text-gray-700" role="status">
+              Selected file: {file.name}
+            </div>
+          )}
           <Button
             className="bg-red-600 hover:bg-red-700 text-white w-full mt-2"
             onClick={handleUpload}
             disabled={!file || uploading}
+            aria-label={uploading ? "Uploading file..." : "Upload file"}
           >
             {uploading ? "Uploading..." : "Upload"}
           </Button>
-          {uploading && <ProgressTracker progress={uploadProgress} label="Uploading..." />}
+          {uploading && (
+            <ProgressTracker
+              progress={uploadProgress}
+              label="Uploading..."
+              aria-label={`Upload progress: ${uploadProgress}%`}
+            />
+          )}
           {generatedKey && (
             <div className="mt-4 text-center">
               <div className="text-gray-700 mb-1">Share this key with the receiver:</div>
-              <div className="text-3xl font-mono text-red-600 bg-gray-100 rounded px-4 py-2 inline-block">{generatedKey}</div>
+              <div
+                className="text-3xl font-mono text-red-600 bg-gray-100 rounded px-4 py-2 inline-block"
+                role="status"
+                aria-label={`Generated key: ${generatedKey}`}
+              >
+                {generatedKey}
+              </div>
             </div>
           )}
         </Card>
@@ -138,20 +173,32 @@ export default function HomePage() {
             placeholder="Input key"
             className="border border-gray-300 rounded px-4 py-2 mb-4 w-full text-center text-lg"
             value={receiveKey}
-            onChange={e => setReceiveKey(e.target.value.replace(/[^0-9]/g, "").slice(0, 6))}
+            onChange={(e) =>
+              setReceiveKey(e.target.value.replace(/[^0-9]/g, "").slice(0, 6))
+            }
             disabled={downloading}
             maxLength={6}
+            aria-label="Enter 6-digit key"
+            pattern="[0-9]*"
+            inputMode="numeric"
           />
           <Button
             className="bg-red-600 hover:bg-red-700 text-white w-full"
             onClick={handleDownload}
             disabled={downloading || receiveKey.length !== 6}
+            aria-label={downloading ? "Downloading file..." : "Download file"}
           >
             {downloading ? "Downloading..." : "Download"}
           </Button>
-          {downloading && <ProgressTracker progress={downloadProgress} label="Downloading..." />}
+          {downloading && (
+            <ProgressTracker
+              progress={downloadProgress}
+              label="Downloading..."
+              aria-label={`Download progress: ${downloadProgress}%`}
+            />
+          )}
         </Card>
       </div>
-    </div>
+    </main>
   );
 }

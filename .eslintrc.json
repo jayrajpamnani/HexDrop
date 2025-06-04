@@ -2,21 +2,45 @@
   "extends": [
     "next/core-web-vitals",
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:security/recommended",
+    "plugin:sonarjs/recommended"
   ],
+  "plugins": ["security", "sonarjs"],
   "rules": {
     "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
     "react/no-unescaped-entities": "off",
     "no-console": ["warn", { "allow": ["warn", "error"] }],
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-empty-object-type": "off"
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-empty-object-type": "off",
+    "security/detect-object-injection": "warn",
+    "security/detect-non-literal-regexp": "warn",
+    "security/detect-unsafe-regex": "warn",
+    "sonarjs/no-duplicate-string": "warn",
+    "sonarjs/cognitive-complexity": ["warn", 15],
+    "sonarjs/no-identical-functions": "warn",
+    "sonarjs/no-redundant-boolean": "warn",
+    "sonarjs/no-small-switch": "warn",
+    "sonarjs/no-unused-collection": "warn",
+    "sonarjs/prefer-immediate-return": "warn",
+    "sonarjs/prefer-object-literal": "warn",
+    "sonarjs/prefer-single-boolean-return": "warn"
   },
   "overrides": [
     {
       "files": ["src/generated/**/*"],
       "rules": {
-        "@typescript-eslint/no-require-imports": "off"
+        "@typescript-eslint/no-require-imports": "off",
+        "security/detect-object-injection": "off"
       }
     }
-  ]
+  ],
+  "settings": {
+    "security": {
+      "no-unsafe-regex": {
+        "maxLength": 100,
+        "maxComplexity": 20
+      }
+    }
+  }
 } 
