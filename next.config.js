@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+// Configuration for Next.js deployment
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
