@@ -1,5 +1,16 @@
 Note: This Project was initially named PeerPC, so you may find that name in some of the places, which you can ignore.
 
+## Screenshots
+
+### 1. Upload a file
+![Upload](/screenshots/1-upload.png)
+
+### 2. Share the key
+![Key](/screenshots/2-key.png)
+
+### 3. Download the file
+![Download](/screenshots/3-download.png)
+
 **HexDrop project structure and logic:**
 
 1. **Project Overview**:
@@ -48,17 +59,6 @@ Note: This Project was initially named PeerPC, so you may find that name in some
    - Real-time progress tracking
    - AWS S3 integration for file storage
    - Modern UI with Tailwind CSS
-
-## Screenshots
-
-### 1. Upload a file
-![Upload](/screenshots/1-upload.png)
-
-### 2. Share the key
-![Key](/screenshots/2-key.png)
-
-### 3. Download the file
-![Download](/screenshots/3-download.png)
 
 6. **Security Features**:
    - File encryption using IV and auth tags
