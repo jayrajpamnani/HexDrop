@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+**PeerPC project structure and logic:**
 
-## Getting Started
+1. **Project Overview**:
+   - This is a Next.js application built with TypeScript for peer-to-peer file sharing
+   - It uses modern web technologies and follows a full-stack architecture
 
-First, run the development server:
+2. **Main Technologies**:
+   - Frontend: Next.js 15.3.3 with React 19
+   - Database: PostgreSQL with Prisma ORM
+   - File Storage: AWS S3
+   - Authentication: NextAuth.js
+   - Real-time Communication: Socket.io and Pusher
+   - Styling: Tailwind CSS with custom components
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+3. **Application Structure**:
+   - `/src/app`: Main application routes
+     - `/send`: File sending interface
+     - `/receive`: File receiving interface
+     - `/api`: Backend API endpoints
+   - `/src/components`: Reusable UI components
+   - `/src/lib`: Utility functions and shared logic
+   - `/src/types`: TypeScript type definitions
+   - `/src/generated`: Auto-generated code (including Prisma client)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. **Database Schema**:
+   The application uses a `FileTransfer` model with the following fields:
+   - `id`: Unique identifier (CUID)
+   - `uniqueKey`: Unique key for file transfer
+   - `fileName`: Name of the transferred file
+   - `fileSize`: Size of the file
+   - `mimeType`: File type
+   - `s3Key`: AWS S3 storage key
+   - `encryptionIV`: Initialization vector for encryption
+   - `authTag`: Authentication tag for encryption
+   - `createdAt`: Timestamp of creation
+   - `expiresAt`: Expiration timestamp
+   - `downloadCount`: Number of times downloaded
+   - `maxDownloads`: Maximum allowed downloads
+   - `password`: Optional password protection
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+5. **Key Features**:
+   - Secure file transfer with encryption
+   - Password protection for files
+   - Download limit controls
+   - File expiration
+   - Real-time progress tracking
+   - AWS S3 integration for file storage
+   - Modern UI with Tailwind CSS
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+6. **Security Features**:
+   - File encryption using IV and auth tags
+   - Password protection option
+   - Download count tracking
+   - File expiration system
 
-## Learn More
+7. **Development Setup**:
+   - Uses Turbopack for faster development
+   - ESLint for code linting
+   - TypeScript for type safety
+   - Environment variables for configuration
 
-To learn more about Next.js, take a look at the following resources:
+Let me check the main page component to understand the user interface better.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Read file: src/app/page.tsx
+8. **User Interface**:
+   The main page (`page.tsx`) implements a clean, modern interface with two main sections:
 
-## Deploy on Vercel
+   a) **Send Section**:
+   - File selection button
+   - Upload button
+   - Progress tracking
+   - Generated key display for sharing
+   - Error handling and validation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   b) **Receive Section**:
+   - 6-digit key input field
+   - Download button
+   - Progress tracking
+   - Error handling and validation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+9. **File Transfer Flow**:
+   - **Sending**:
+     1. User selects a file
+     2. File is uploaded to the server
+     3. Server generates a unique 6-digit key
+     4. File is stored in S3 with encryption
+     5. Key is displayed to the sender for sharing
+
+   - **Receiving**:
+     1. User enters the 6-digit key
+     2. System validates the key
+     3. File is downloaded from S3
+     4. File is decrypted
+     5. Download is tracked and counted
+
+10. **Security Measures**:
+    - Files are encrypted before storage
+    - 6-digit key system for secure sharing
+    - Download count tracking
+    - File expiration system
+    - Optional password protection
+
+This is a well-structured application that provides a secure and user-friendly way to share files between devices. The use of modern technologies and security practices makes it a robust solution for peer-to-peer file sharing.
+
