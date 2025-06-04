@@ -43,6 +43,7 @@ export default function HomePage() {
         alert(data.error || "Upload failed");
       }
     } catch (error) {
+      console.error("Upload error:", error);
       alert("An error occurred during upload.");
     } finally {
       setUploading(false);
@@ -82,6 +83,7 @@ export default function HomePage() {
       a.remove();
       window.URL.revokeObjectURL(url);
     } catch (error) {
+      console.error("Download error:", error);
       alert("An error occurred during download.");
     } finally {
       setDownloading(false);
