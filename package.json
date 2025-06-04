@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
-    "start": "next start -p ${PORT:-3000}",
-    "start:prod": "NODE_ENV=production next start -p ${PORT:-3000}",
+    "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
     "format": "prettier --write .",
@@ -14,8 +13,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "prepare": "husky install",
-    "security-check": "npm audit && snyk test"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.821.0",
@@ -28,7 +26,7 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.511.0",
     "nanoid": "^5.1.5",
-    "next": "^14.2.29",
+    "next": "^15.3.3",
     "next-auth": "^4.24.11",
     "next-themes": "^0.4.6",
     "prisma": "^5.10.2",

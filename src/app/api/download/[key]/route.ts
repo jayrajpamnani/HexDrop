@@ -111,7 +111,7 @@ export async function GET(
     return new NextResponse(decrypted, {
       headers: {
         "Content-Type": fileTransfer.mimeType,
-        "Content-Disposition": `attachment; filename="${encodeURIComponent(fileTransfer.fileName)}"`,
+        "Content-Disposition": `attachment; filename*=UTF-8''${encodeURIComponent(fileTransfer.fileName)}`,
         "Content-Length": decrypted.length.toString(),
         "Cache-Control": "no-store, no-cache, must-revalidate",
         "Pragma": "no-cache",

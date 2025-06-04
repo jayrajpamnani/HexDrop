@@ -85,8 +85,17 @@ export default function HomePage() {
       const disposition = response.headers.get("Content-Disposition");
       let filename = "downloaded-file";
       if (disposition) {
-        const match = disposition.match(/filename="(.+)"/);
-        if (match) filename = match[1];
+        // Parse RFC 6266 format: filename*=UTF-8''encoded-filename
+        const match = disposition.match(/filename\*=UTF-8''([^;]+)/i);
+        if (match && match[1]) {
+          filename = decodeURIComponent(match[1]);
+        } else {
+          // Fallback to regular filename if RFC 6266 format is not present
+          const fallbackMatch = disposition.match(/filename="([^"]+)"/);
+          if (fallbackMatch && fallbackMatch[1]) {
+            filename = fallbackMatch[1];
+          }
+        }
       }
 
       const url = window.URL.createObjectURL(blob);
@@ -171,7 +180,7 @@ export default function HomePage() {
           <input
             type="text"
             placeholder="Input key"
-            className="border border-gray-300 rounded px-4 py-2 mb-4 w-full text-center text-lg"
+            className="border border-red-200 rounded px-4 py-2 mb-4 w-full text-center text-lg bg-white text-black focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
             value={receiveKey}
             onChange={(e) =>
               setReceiveKey(e.target.value.replace(/[^0-9]/g, "").slice(0, 6))

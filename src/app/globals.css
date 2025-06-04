@@ -115,9 +115,46 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-[var(--border)];
   }
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Toast styles */
+.toaster {
+  --toast-bg: white;
+  --toast-border: #fecaca;
+  --toast-text: black;
+  --toast-success: #22c55e;
+  --toast-error: #ef4444;
+}
+
+.toaster [data-sonner-toast] {
+  background: var(--toast-bg) !important;
+  color: var(--toast-text) !important;
+  border: 1px solid var(--toast-border) !important;
+}
+
+.toaster [data-sonner-toast][data-type="success"] {
+  border-left: 4px solid var(--toast-success) !important;
+}
+
+.toaster [data-sonner-toast][data-type="error"] {
+  border-left: 4px solid var(--toast-error) !important;
+}
+
+.toaster [data-sonner-toast] [data-close-button] {
+  color: var(--toast-text) !important;
+  opacity: 0.6;
+}
+
+.toaster [data-sonner-toast] [data-close-button]:hover {
+  opacity: 1;
+}
+
+/* Success icon (tick mark) styles */
+.toaster [data-sonner-toast][data-type="success"] [data-icon] {
+  color: var(--toast-error) !important;
 }

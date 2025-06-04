@@ -22,11 +22,9 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://hexdrop.vercel.app"),
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://hexdrop.vercel.app",
     title: "HexDrop - Secure File Sharing",
     description: "Share files securely with end-to-end encryption",
     siteName: "HexDrop",
@@ -68,7 +66,19 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
-          <Toaster />
+          <Toaster
+            theme="light"
+            toastOptions={{
+              style: {
+                background: 'white',
+                color: 'black',
+                border: '1px solid #fecaca',
+              },
+              className: 'toaster',
+            }}
+            richColors
+            closeButton
+          />
         </ThemeProvider>
       </body>
     </html>
