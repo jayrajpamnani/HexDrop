@@ -65,6 +65,7 @@ Let me check the main page component to understand the user interface better.
 
 
 Read file: src/app/page.tsx
+
 8. **User Interface**:
    The main page (`page.tsx`) implements a clean, modern interface with two main sections:
 
