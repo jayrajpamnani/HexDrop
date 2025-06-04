@@ -1,40 +1,71 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { Toaster } from "@/components/ui/sonner";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "HexDrop: Private, encrypted file delivery",
-  description: "Securely share files with end-to-end encryption. No account required.",
-  keywords: ["file sharing", "encryption", "secure", "privacy", "file transfer"],
-  authors: [{ name: "HexDrop Team" }],
-  viewport: "width=device-width, initial-scale=1",
-  robots: "index, follow",
-  themeColor: "#ffffff",
+  title: "HexDrop - Secure File Sharing",
+  description: "Share files securely with end-to-end encryption",
+  keywords: ["file sharing", "encryption", "secure", "privacy"],
+  authors: [{ name: "Jayraj Pamnani" }],
+  creator: "Jayraj Pamnani",
+  publisher: "Jayraj Pamnani",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL("https://hexdrop.vercel.app"),
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://hexdrop.vercel.app",
+    title: "HexDrop - Secure File Sharing",
+    description: "Share files securely with end-to-end encryption",
+    siteName: "HexDrop",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "HexDrop - Secure File Sharing",
+    description: "Share files securely with end-to-end encryption",
+    creator: "@jayrajpamnani",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: "your-google-site-verification",
+  },
 };
 
-interface RootLayoutProps {
+export default function RootLayout({
+  children,
+}: {
   children: React.ReactNode;
-}
-
-export default function RootLayout({ children }: RootLayoutProps) {
+}) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className="antialiased min-h-screen bg-background">
-        {children}
-        <Toaster />
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

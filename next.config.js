@@ -3,61 +3,57 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  poweredByHeader: false,
   experimental: {
-    serverActions: true,
     optimizeCss: true,
-    scrollRestoration: true,
+    scrollRestoration: true
   },
   env: {
     AWS_REGION: process.env.AWS_REGION,
+    AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
     AWS_S3_BUCKET: process.env.AWS_S3_BUCKET,
   },
-  typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    ignoreBuildErrors: process.env.NODE_ENV === "production",
-  },
   eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
-    ignoreDuringBuilds: process.env.NODE_ENV === "production",
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
   },
   headers: async () => [
     {
-      source: "/:path*",
+      source: '/:path*',
       headers: [
         {
-          key: "X-DNS-Prefetch-Control",
-          value: "on",
+          key: 'X-Frame-Options',
+          value: 'DENY',
         },
         {
-          key: "Strict-Transport-Security",
-          value: "max-age=63072000; includeSubDomains; preload",
+          key: 'X-Content-Type-Options',
+          value: 'nosniff',
         },
         {
-          key: "X-XSS-Protection",
-          value: "1; mode=block",
+          key: 'X-XSS-Protection',
+          value: '1; mode=block',
         },
         {
-          key: "X-Frame-Options",
-          value: "SAMEORIGIN",
+          key: 'Referrer-Policy',
+          value: 'strict-origin-when-cross-origin',
         },
         {
-          key: "X-Content-Type-Options",
-          value: "nosniff",
-        },
-        {
-          key: "Referrer-Policy",
-          value: "origin-when-cross-origin",
+          key: 'Permissions-Policy',
+          value: 'camera=(), microphone=(), geolocation=()',
         },
       ],
     },
   ],
   images: {
-    domains: [],
-    formats: ["image/avif", "image/webp"],
+    formats: ['image/avif', 'image/webp'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
 };
 
