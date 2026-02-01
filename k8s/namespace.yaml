@@ -1,0 +1,11 @@
+# =============================================================================
+# HexDrop Kubernetes Namespace
+# =============================================================================
+# Creates an isolated namespace for all HexDrop resources
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hexdrop
+  labels:
+    app.kubernetes.io/name: hexdrop
+    app.kubernetes.io/part-of: hexdrop

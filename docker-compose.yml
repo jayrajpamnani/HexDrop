@@ -1,0 +1,63 @@
+# =============================================================================
+# HexDrop Docker Compose - Local Development
+# =============================================================================
+# Use this file to test the Docker setup locally before deploying to EKS.
+#
+# Usage:
+#   docker-compose up --build
+#
+# Access the application at: http://localhost:3000
+# =============================================================================
+
+version: '3.8'
+
+services:
+  # ---------------------------------------------------------------------------
+  # HexDrop Application
+  # ---------------------------------------------------------------------------
+  hexdrop:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://hexdrop:hexdrop123@postgres:5432/hexdrop
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_S3_BUCKET=${AWS_S3_BUCKET}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # ---------------------------------------------------------------------------
+  # PostgreSQL Database (for local testing only)
+  # ---------------------------------------------------------------------------
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=hexdrop
+      - POSTGRES_PASSWORD=hexdrop123
+      - POSTGRES_DB=hexdrop
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hexdrop -d hexdrop"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
