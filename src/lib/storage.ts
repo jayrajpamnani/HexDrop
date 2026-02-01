@@ -7,27 +7,27 @@ import {
   S3ServiceException,
 } from "@aws-sdk/client-s3";
 
-if (!process.env.AWS_REGION) {
+if (!process.env["AWS_REGION"]) {
   throw new Error("AWS_REGION environment variable is not set");
 }
 
-if (!process.env.AWS_ACCESS_KEY_ID) {
+if (!process.env["AWS_ACCESS_KEY_ID"]) {
   throw new Error("AWS_ACCESS_KEY_ID environment variable is not set");
 }
 
-if (!process.env.AWS_SECRET_ACCESS_KEY) {
+if (!process.env["AWS_SECRET_ACCESS_KEY"]) {
   throw new Error("AWS_SECRET_ACCESS_KEY environment variable is not set");
 }
 
-if (!process.env.AWS_S3_BUCKET) {
+if (!process.env["AWS_S3_BUCKET"]) {
   throw new Error("AWS_S3_BUCKET environment variable is not set");
 }
 
 const s3 = new S3Client({
-  region: process.env.AWS_REGION,
+  region: process.env["AWS_REGION"],
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    accessKeyId: process.env["AWS_ACCESS_KEY_ID"],
+    secretAccessKey: process.env["AWS_SECRET_ACCESS_KEY"],
   },
   maxAttempts: 3,
 });
@@ -49,7 +49,7 @@ interface GetParams {
 export class StorageError extends Error {
   constructor(
     message: string,
-    public readonly cause?: unknown,
+    public override readonly cause?: unknown,
     public readonly code?: string
   ) {
     super(message);

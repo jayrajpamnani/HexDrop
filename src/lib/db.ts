@@ -1,6 +1,6 @@
 import { PrismaClient, Prisma } from "@/generated/prisma";
 
-if (!process.env.DATABASE_URL) {
+if (!process.env["DATABASE_URL"]) {
   throw new Error("DATABASE_URL environment variable is not set");
 }
 
@@ -9,11 +9,11 @@ declare global {
 }
 
 export const prisma = global.prisma || new PrismaClient({
-  log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+  log: process.env["NODE_ENV"] === "development" ? ["query", "error", "warn"] : ["error"],
   errorFormat: "pretty",
 });
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env["NODE_ENV"] !== "production") {
   global.prisma = prisma;
 }
 
@@ -24,7 +24,7 @@ process.on("beforeExit", async () => {
 
 // Error handling
 prisma.$on("query" as never, (e: Prisma.QueryEvent) => {
-  if (process.env.NODE_ENV === "development") {
+  if (process.env["NODE_ENV"] === "development") {
     console.log("Query:", e.query);
     console.log("Params:", e.params);
     console.log("Duration:", `${e.duration}ms`);

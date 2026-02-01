@@ -19,8 +19,9 @@ export function FileUploader({
 }: FileUploaderProps) {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      if (acceptedFiles.length > 0) {
-        onFileAccepted(acceptedFiles[0]);
+      const file = acceptedFiles[0];
+      if (file) {
+        onFileAccepted(file);
       }
     },
     [onFileAccepted]

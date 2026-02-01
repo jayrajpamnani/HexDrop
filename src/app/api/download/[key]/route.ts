@@ -15,7 +15,7 @@ interface DownloadResponse {
 }
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: RouteParams }
 ): Promise<NextResponse<DownloadResponse | Buffer>> {
   try {
@@ -60,7 +60,7 @@ export async function GET(
     let s3Response;
     try {
       s3Response = await getFromS3({
-        Bucket: process.env.AWS_S3_BUCKET!,
+        Bucket: process.env["AWS_S3_BUCKET"]!,
         Key: fileTransfer.s3Key,
       });
     } catch (error) {

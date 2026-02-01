@@ -8,28 +8,28 @@ import { cn } from "@/lib/utils"
 
 interface DialogProps extends React.ComponentProps<typeof DialogPrimitive.Root> {}
 
-const Dialog = React.forwardRef<HTMLDivElement, DialogProps>((props, ref) => {
+const Dialog = React.forwardRef<HTMLDivElement, DialogProps>((props, _ref) => {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />
 })
 Dialog.displayName = "Dialog"
 
 interface DialogTriggerProps extends React.ComponentProps<typeof DialogPrimitive.Trigger> {}
 
-const DialogTrigger = React.forwardRef<HTMLButtonElement, DialogTriggerProps>((props, ref) => {
+const DialogTrigger = React.forwardRef<HTMLButtonElement, DialogTriggerProps>((props, _ref) => {
   return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />
 })
 DialogTrigger.displayName = "DialogTrigger"
 
 interface DialogPortalProps extends React.ComponentProps<typeof DialogPrimitive.Portal> {}
 
-const DialogPortal = React.forwardRef<HTMLDivElement, DialogPortalProps>((props, ref) => {
+const DialogPortal = React.forwardRef<HTMLDivElement, DialogPortalProps>((props, _ref) => {
   return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />
 })
 DialogPortal.displayName = "DialogPortal"
 
 interface DialogCloseProps extends React.ComponentProps<typeof DialogPrimitive.Close> {}
 
-const DialogClose = React.forwardRef<HTMLButtonElement, DialogCloseProps>((props, ref) => {
+const DialogClose = React.forwardRef<HTMLButtonElement, DialogCloseProps>((props, _ref) => {
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />
 })
 DialogClose.displayName = "DialogClose"

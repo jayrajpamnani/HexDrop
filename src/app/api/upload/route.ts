@@ -82,7 +82,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<UploadRes
     const s3Key = `uploads/${uniqueKey}/${file.name}`;
     try {
       await uploadToS3({
-        Bucket: process.env.AWS_S3_BUCKET!,
+        Bucket: process.env["AWS_S3_BUCKET"]!,
         Key: s3Key,
         Body: encrypted,
         ContentType: file.type,
