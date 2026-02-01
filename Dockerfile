@@ -8,7 +8,7 @@
 # Stage 1: Dependencies
 # -----------------------------------------------------------------------------
 # Install all dependencies including devDependencies for building
-FROM node:20-alpine AS deps
+FROM node:18-alpine AS deps
 
 # Install libc6-compat for Alpine compatibility with some npm packages
 RUN apk add --no-cache libc6-compat
@@ -20,13 +20,14 @@ COPY package.json package-lock.json ./
 COPY prisma ./prisma/
 
 # Install all dependencies (including devDependencies for build)
-RUN npm ci
+# --ignore-scripts skips husky which fails in Docker (no git)
+RUN npm ci --ignore-scripts
 
 # -----------------------------------------------------------------------------
 # Stage 2: Builder
 # -----------------------------------------------------------------------------
 # Build the Next.js application
-FROM node:20-alpine AS builder
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
@@ -37,8 +38,13 @@ COPY . .
 # Generate Prisma client
 RUN npx prisma generate
 
-# Set environment variable for build
+# Set environment variables for build (required for module initialization)
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV DATABASE_URL="postgresql://placeholder:placeholder@localhost:5432/placeholder"
+ENV AWS_REGION="us-east-1"
+ENV AWS_ACCESS_KEY_ID="placeholder"
+ENV AWS_SECRET_ACCESS_KEY="placeholder"
+ENV AWS_S3_BUCKET="placeholder"
 
 # Build the Next.js application
 RUN npm run build
@@ -47,7 +53,7 @@ RUN npm run build
 # Stage 3: Runner (Production)
 # -----------------------------------------------------------------------------
 # Create the production image with minimal footprint
-FROM node:20-alpine AS runner
+FROM node:18-alpine AS runner
 
 WORKDIR /app
 

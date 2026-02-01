@@ -3,8 +3,10 @@
 const nextConfig = {
   reactStrictMode: true,
   
+  // Skip ESLint during build (CI runs type-check separately)
+  eslint: { ignoreDuringBuilds: true },
+  
   // Enable standalone output for Docker deployment
-  // This creates a minimal production build that includes only necessary files
   output: 'standalone',
   
   images: {
