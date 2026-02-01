@@ -10,8 +10,8 @@
 # Install all dependencies including devDependencies for building
 FROM node:18-alpine AS deps
 
-# Install libc6-compat for Alpine compatibility with some npm packages
-RUN apk add --no-cache libc6-compat
+# Install libc6-compat and OpenSSL for Prisma engine
+RUN apk add --no-cache libc6-compat openssl
 
 WORKDIR /app
 
@@ -28,6 +28,9 @@ RUN npm ci --ignore-scripts
 # -----------------------------------------------------------------------------
 # Build the Next.js application
 FROM node:18-alpine AS builder
+
+# Install OpenSSL for Prisma engine during build
+RUN apk add --no-cache libc6-compat openssl
 
 WORKDIR /app
 
@@ -61,8 +64,8 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Install only the necessary runtime dependencies
-RUN apk add --no-cache libc6-compat
+# Install libc6-compat and OpenSSL for Prisma engine
+RUN apk add --no-cache libc6-compat openssl
 
 # Create non-root user for security
 RUN addgroup --system --gid 1001 nodejs
@@ -81,8 +84,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Copy Prisma files needed for runtime
+# Schema uses custom output to src/generated/prisma (not node_modules/.prisma)
 COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder --chown=nextjs:nodejs /app/src/generated ./src/generated
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
 # Switch to non-root user
