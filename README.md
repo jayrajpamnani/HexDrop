@@ -18,13 +18,13 @@ The goal was to go from a working app to a production-style deployment on AWS us
 
 ## Screenshots
 
-### Architecture Overview
-
 ### Frontend
 
 ![Frontend](Screenshots/Frontend.png)
 
 ![Frontend 2](Screenshots/frontend-2.png)
+
+### Architecture Overview
 
 ![Architecture Overview](Screenshots/Architecture%20Overview.png)
 
