@@ -15,3 +15,29 @@ This project was undertaken to learn and apply **DevOps practices**:
 - **Infrastructure as Code** — Kubernetes manifests and automation scripts for provisioning and configuring AWS resources
 
 The goal was to go from a working app to a production-style deployment on AWS using containers and Kubernetes, rather than to document how others can run the project locally or elsewhere.
+
+## Screenshots
+
+### Architecture Overview
+
+![Architecture Overview](Screenshots/Architecture%20Overview.png)
+
+### GitHub Actions Overview
+
+![Github Actions Overview](Screenshots/Github%20Actions%20Overview.png)
+
+### Workflow History
+
+![Workflow History](Screenshots/Workflow%20History.png)
+
+### Build and Test
+
+![Build and Test](Screenshots/Build%20and%20Test.png)
+
+### Build and Push to ECR
+
+![Build and Push to ECR](Screenshots/Build%20and%20Push%20to%20ECR.png)
+
+### Deploy to EKS
+
+![Deploy to EKS](Screenshots/Deploy%20to%20EKS.png)
